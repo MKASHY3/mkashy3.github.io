@@ -40,7 +40,7 @@ async function renderFirstChart() {
         .range(d3.schemeSet2);
 
     // -1- Create a tooltip div that is hidden by default:
-    const tooltip = d3.select("#slide-1")
+    const tooltip = d3.select("#slide-2")
         .append("div")
         .style("opacity", 0)
         .attr("class", "tooltip")
@@ -432,7 +432,7 @@ function renderFourthChart() {
         .center([0, 20])
         .translate([width / 2, height / 2]);
 
-    const tooltip = d3.select("#slide-4")
+    const tooltip = d3.select("#slide-5")
         .append("div")
         .style("opacity", 0)
         .attr("class", "tooltip")
