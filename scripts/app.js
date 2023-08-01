@@ -1,6 +1,6 @@
 //First scene
 async function renderFirstScene() {
-    const margin = {top: 10, right: 20, bottom: 30, left: 80},
+    const margin = {top: 20, right: 30, bottom: 30, left: 80},
         width = 1300 - margin.left - margin.right,
         height = 800 - margin.top - margin.bottom;
     const data = await d3.csv("https://mkashy3.github.io/data/owid-covid-latest.csv");
@@ -38,7 +38,7 @@ async function renderFirstScene() {
     // Add a scale for bubble color
     const myColor = d3.scaleOrdinal()
         .domain(getContinentKeys())
-        .range(d3.schemeSet2);
+        .range(d3.schemeSet3.slice(2,11));
 
     // -1- Create a tooltip div that is hidden by default:
     const tooltip = d3.select("#slide-2")
@@ -99,7 +99,7 @@ async function renderFirstScene() {
 }
 
 function countryCodesToAnnotateSceneOne() {
-    return ["GRC", "OWID_HIC", "ARG"]
+    return ["GRC", "BDI", "PER"]
 }
 
 function renderFirstSceneAnnotations(d, x, y, margin) {
@@ -108,7 +108,7 @@ function renderFirstSceneAnnotations(d, x, y, margin) {
     const annotations = [
         {
             note: {
-                label: Math.round(d.total_vaccinations_per_hundred) + "total vaccinations/hundred, " + Math.round(d.total_cases_per_million) + " covid cases/million",
+                label: Math.round(d.total_vaccinations_per_hundred) + " total vaccinations/hundred, " + Math.round(d.total_cases_per_million) + " covid cases/million",
                 lineType: "none",
                 bgPadding: {"top": 15, "left": 10, "right": 10, "bottom": 10},
                 title: d.entity,
@@ -178,7 +178,7 @@ async function renderSecondScene() {
     // Add a scale for bubble color
     const myColor = d3.scaleOrdinal()
         .domain(getContinentKeys())
-        .range(d3.schemeSet2);
+        .range(d3.schemeSet3.slice(2,11));
 
     // -1- Create a tooltip div that is hidden by default:
     const tooltip = d3.select("#slide-3")
@@ -249,7 +249,7 @@ function renderSecondSceneAnnotations(d, x, y, margin) {
     const annotations = [
         {
             note: {
-                label: Math.round(d.total_vaccinations_per_hundred) + "total vaccinations/hundred, " + Math.round(d.total_cases_per_million) + " covid cases/million",
+                label: Math.round(d.total_vaccinations_per_hundred) + " total vaccinations/hundred, " + Math.round(d.total_cases_per_million) + " covid cases/million",
                 lineType: "none",
                 bgPadding: {"top": 15, "left": 10, "right": 10, "bottom": 10},
                 title: d.entity,
@@ -275,7 +275,7 @@ function renderSecondSceneAnnotations(d, x, y, margin) {
 }
 
 function countryCodesToAnnotateSceneTwo() {
-    return ["KGZ", "BGD", "NGA"]
+    return ["KGZ", "BGD", "TCD"]
 }
 
 
@@ -288,7 +288,7 @@ async function renderThirdScene() {
  
  // Map and projection
  const projection = d3.geoMercator()
-    .scale(100)
+    .scale(200)
     .center([0, 0])
     .translate([width / 2, height / 2]);
  
@@ -307,7 +307,7 @@ async function renderThirdScene() {
  let data = new Map()
  const colorScale = d3.scaleOrdinal()
     .domain(getContinentKeys())
-    .range(d3.schemeSet2);
+    .range(d3.schemeSet3.slice(2,11));
  
  // Load external data and boot
  Promise.all([
@@ -359,7 +359,7 @@ async function renderThirdScene() {
         })
  })
  
-     renderLegend(d3.select("#chart-4"), getContinentKeys(), width, colorScale);
+    renderLegendSceneThree(d3.select("#chart-4"), getContinentKeys(), width, colorScale);
  }
  
  function thirdSceneTooltipHTML(object) {
@@ -401,7 +401,7 @@ async function renderFourthScene() {
     // A color scale: one color for each group
     const myColor = d3.scaleOrdinal()
         .domain(entities)
-        .range(d3.schemeSet2);
+        .range(d3.schemeSet3.slice(2,11));
 
     // Add X axis to measure time
     const x = d3.scaleLinear()
@@ -549,6 +549,40 @@ function renderLegend(svg, continentKeys, width, myColor) {
         .style("alignment-baseline", "middle")
 }
 
+function renderLegendSceneThree(svg, continentKeys, width, myColor) {
+    // Add one dot in the legend for each name.
+    svg.selectAll("legend-dots")
+        .data(continentKeys)
+        .enter()
+        .append("circle")
+        .attr("cx", width - 100)
+        .attr("cy", function (d, i) {
+            return 50 + i * 25
+        }) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("r", 2)
+        .style("fill", function (d) {
+            return myColor(d)
+        })
+
+    svg.selectAll("legend-labels")
+        .data(continentKeys)
+        .enter()
+        .append("text")
+        .attr("x", width + 8 - 100)
+        .attr("y", function (d, i) {
+            return 50 + i * 25
+        }) // 100 is where the first dot appears. 25 is the distance between dots
+        .style("fill", function (d) {
+            return myColor(d)
+        })
+        .text(function (d) {
+            return d
+        })
+        .attr("text-anchor", "left")
+        .style("alignment-baseline", "middle")
+}
+
+
 function getContinentKeys() {
     return ["Asia", "Europe", "North America", "South America", "Africa", "Oceania"];
 }
@@ -630,7 +664,7 @@ async function renderThirdChart() {
     // A color scale: one color for each group
     const myColor = d3.scaleOrdinal()
         .domain(entities)
-        .range(d3.schemeSet2);
+        .range(d3.schemeSet3.slice(2,11));
 
     // Add X axis to measure time
     const x = d3.scaleLinear()
