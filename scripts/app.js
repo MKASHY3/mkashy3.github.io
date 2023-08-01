@@ -405,14 +405,14 @@ async function renderFourthScene() {
 
     // Add X axis to measure time
     const x = d3.scaleLinear()
-        .domain([0, 5.4])
+        .domain([0, 180])
         .range([0, width]);
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x).tickFormat(d3.format("d")));
     // Add Y axis
     const y = d3.scaleLinear()
-        .domain([0.2, 5.4])
+        .domain([0.2, 500])
         .range([height, 0]);
     svg.append("g")
         .call(d3.axisLeft(y).tickFormat(d3.format("d")));
