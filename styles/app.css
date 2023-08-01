@@ -1,3 +1,7 @@
+body div {
+    font-family: "WhitneySSM" !important;
+}
+
 .bubbles {
     stroke-width: 2px;
     stroke: white;
